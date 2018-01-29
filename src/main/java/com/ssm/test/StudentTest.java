@@ -73,6 +73,8 @@ public class StudentTest {
         int count = studentDao.updateById(student);
 
         System.out.println(count);
+
+        System.out.println(student);
     }
 
 }
