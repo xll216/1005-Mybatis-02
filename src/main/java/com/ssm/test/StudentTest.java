@@ -49,6 +49,7 @@ public class StudentTest {
         int key = studentDao
                 .insertStudent(student);
         System.out.println(key);
+        System.out.println("生成的主键id：" + student.getId());
 
     }
 

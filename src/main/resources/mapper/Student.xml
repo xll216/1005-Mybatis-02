@@ -49,7 +49,8 @@
     <!--插入某个学生对象，其中主键id采用自动增长的方式
     故插入时不需要手动设置主键id-->
     <insert id="insertStudent"
-            parameterType="com.ssm.domain.Student">
+            parameterType="com.ssm.domain.Student"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO student(sname,spassword)
         VALUES(#{name},#{password})
     </insert>
