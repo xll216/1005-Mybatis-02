@@ -47,10 +47,17 @@
     </select>
 
     <!--插入某个学生对象，其中主键id采用自动增长的方式
-    故插入时不需要手动设置主键id-->
+    故插入时不需要手动设置主键id
+    useGeneratedKeys：主键采用自动增长的策略，主要针对的
+        是mysql数据库
+
+    keyProperty：指明实体类中的哪个成员变量对应主键，即主键
+        值赋值给哪个成员变量
+    -->
     <insert id="insertStudent"
             parameterType="com.ssm.domain.Student"
-            useGeneratedKeys="true" keyProperty="id">
+            useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO student(sname,spassword)
         VALUES(#{name},#{password})
     </insert>
