@@ -13,12 +13,24 @@
         <result property="infor" column="cinfor"/>
     </resultMap>
 
+    <!--定义SQL片段
+    作用：提高sql语句的可重用性，方便更新
+    id：给当前的sql片段定义唯一标识
+    -->
+    <sql id="clazzColumns">
+        cid,cname,cinfor
+    </sql>
+
+
     <!--动态SQL-->
     <!--if、where条件查询-->
     <select id="select"
             resultMap="clazzMap"
             parameterType="com.ssm.domain.Clazz">
-        SELECT * FROM clazz
+        SELECT
+        <!--引入SQL片段，refid：SQL片段的唯一标识-->
+        <include refid="clazzColumns"/>
+        FROM clazz
         <where>
             <!--如果实体类中的id属性值大于0 则进行sql语句的拼接-->
             <if test="id > 0">
@@ -44,7 +56,10 @@
     <select id="selectInID"
             resultMap="clazzMap"
             parameterType="java.util.List">
-        SELECT * FROM clazz
+        SELECT
+        <!--引入SQL片段，refid：SQL片段的唯一标识-->
+        <include refid="clazzColumns"/>
+        FROM clazz
         <where>
             <if test="list != null and list.size() > 0">
                 <!--foreach标签

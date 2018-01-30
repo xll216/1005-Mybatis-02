@@ -46,7 +46,7 @@ public class ClazzTest {
 
         List<Integer> param = new ArrayList<>();
         param.add(1);
-        param.add(3);
+        param.add(2);
         param.add(5);
 
         /*批量查询*/
