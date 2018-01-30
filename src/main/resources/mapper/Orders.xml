@@ -5,4 +5,71 @@
 
 <mapper namespace="com.ssm.mapper.OrdersDao">
 
+    <!--定义sql片段-->
+    <sql id="orderColumns">
+        o.id,
+        o.number,
+        o.total_price,
+        o.create_date
+    </sql>
+    <sql id="userColumns">
+        u.username,
+        u.address
+    </sql>
+
+    <!--定义结果集-->
+    <!--Order表中的结果映射-->
+    <resultMap id="orderMap"
+               type="com.ssm.domain.Orders">
+
+        <!--定义订单表的基础属性-->
+        <id property="id" column="id"/>
+        <result property="number"
+                column="number"/>
+
+        <result property="totalPrice"
+                column="total_price"/>
+
+        <result property="createDate"
+                column="create_date"/>
+
+        <!--一对一关联用户信息的结果映射描述-->
+        <association property="user"
+                     resultMap="userMap">
+        </association>
+
+    </resultMap>
+
+    <!--User表中的结果映射-->
+    <resultMap id="userMap"
+               type="com.ssm.domain.User">
+        <id property="id" column="id"/>
+
+        <result property="username"
+                column="username"/>
+
+        <result property="password"
+                column="password"/>
+
+        <result property="sex"
+                column="sex"/>
+
+        <result property="birthday"
+                column="birthday"/>
+
+        <result property="address"
+                column="address"/>
+    </resultMap>
+
+    <select id="selectOrdersAndUser"
+            resultMap="orderMap">
+        SELECT
+        <!--引入sql片段，连接查询时用到的两个表字段-->
+        <include refid="orderColumns"/>
+        ,
+        <include refid="userColumns"/>
+        FROM Orders o,User u
+        WHERE o.user_id = u.id;
+    </select>
+
 </mapper>

@@ -12,6 +12,9 @@ public class Orders implements Serializable {
     private double totalPrice;
     private Date createDate;
 
+    /*一对一关系 订单对用户*/
+    private User user;//当前订单所属的用户对象
+
     public Orders() {
     }
 
@@ -19,6 +22,14 @@ public class Orders implements Serializable {
         this.number = number;
         this.totalPrice = totalPrice;
         this.createDate = createDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {
