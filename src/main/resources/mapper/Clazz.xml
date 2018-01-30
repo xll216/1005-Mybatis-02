@@ -38,4 +38,35 @@
         </where>
     </select>
 
+    <!--foreach批量操作标签
+    select * from Clazz where id in(1,2,3)
+    -->
+    <select id="selectInID"
+            resultMap="clazzMap"
+            parameterType="java.util.List">
+        SELECT * FROM clazz
+        <where>
+            <if test="list != null and list.size() > 0">
+                <!--foreach标签
+                collection：要遍历的集合名称，如果是基本类型的
+                         集合，则直接使用list替代，如果是pojo
+                         封装类中的某个集合成员变量，则取成员变
+                         量的名称
+                item：每次遍历生成的中间对象名称
+                open：遍历开始前拼接的字符串
+                close：遍历结束后拼接的字符串
+                separator：每次遍历过程中拼接的分隔符
+                -->
+                <foreach collection="list"
+                         item="id"
+                         open="AND cid in ("
+                         close=")"
+                         separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
 </mapper>

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,22 @@ public class ClazzTest {
         /*调用条件查询*/
         List<Clazz> clazzes = clazzDao
                 .select(param);
+        System.out.println(clazzes);
+
+    }
+
+    @Test
+    public void selectInID() {
+
+        List<Integer> param = new ArrayList<>();
+        param.add(1);
+        param.add(3);
+        param.add(5);
+
+        /*批量查询*/
+        List<Clazz> clazzes = clazzDao
+                .selectInID(param);
+
         System.out.println(clazzes);
 
     }

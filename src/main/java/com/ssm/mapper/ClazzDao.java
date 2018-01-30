@@ -11,4 +11,7 @@ public interface ClazzDao {
 
     /*条件查询*/
     List<Clazz> select(Clazz clazz);
+
+    /*批量主键id查询*/
+    List<Clazz> selectInID(List<Integer> ids);
 }
