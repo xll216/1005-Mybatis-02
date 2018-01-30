@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssm.mapper.ClazzDao">
+
+    <!--自定义结果集-->
+    <resultMap id="clazzMap"
+               type="com.ssm.domain.Clazz">
+        <id property="id" column="cid"/>
+        <result property="name" column="cname"/>
+        <result property="infor" column="cinfor"/>
+    </resultMap>
+
+    <!--动态SQL-->
+    <!--if、where条件查询-->
+    <select id="select"
+            resultMap="clazzMap"
+            parameterType="com.ssm.domain.Clazz">
+        SELECT * FROM clazz
+        <where>
+            <!--如果实体类中的id属性值大于0 则进行sql语句的拼接-->
+            <if test="id > 0">
+                AND cid = #{id}
+            </if>
+
+            <!--字符串类型的字段需要进行双重判断-->
+            <if test="name !=null and name !=''">
+                AND cname = #{name}
+            </if>
+
+            <!--sql语句中的字符串拼接用${},通常用于like语句
+            或者order by等-->
+            <if test="infor != null and infor !=''">
+                AND cinfor LIKE '%${infor}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>
