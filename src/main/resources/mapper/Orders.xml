@@ -16,6 +16,14 @@
         u.username,
         u.address
     </sql>
+    <sql id="orderDetailColumns">
+        od.id odid,
+        od.order_id,
+        od.item_id,
+        od.item_count,
+        od.item_price,
+        od.total_price
+    </sql>
 
     <!--定义结果集-->
     <!--Order表中的结果映射-->
@@ -39,7 +47,6 @@
         </association>
 
     </resultMap>
-
     <!--User表中的结果映射-->
     <resultMap id="userMap"
                type="com.ssm.domain.User">
@@ -60,6 +67,50 @@
         <result property="address"
                 column="address"/>
     </resultMap>
+    <!--OrderDetail表中的结果映射-->
+    <resultMap id="orderDetailMap"
+               type="com.ssm.domain.OrderDetail">
+        <!--由于order表中的id列名与orderdetail表中
+        的id列名同名，所以在select时需要定义id列的别名，
+        用别名列进行主键映射-->
+        <id property="id" column="odid"/>
+
+        <result property="itemCount"
+                column="item_count"/>
+
+        <result property="itemPrice"
+                column="item_price"/>
+
+        <result property="totalPrice"
+                column="total_price"/>
+    </resultMap>
+
+    <!--Order表包含订单明细的结果集-->
+    <resultMap id="orderAndDetailMap"
+               type="com.ssm.domain.Orders">
+        <!--order表的基础属性-->
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+
+        <result property="totalPrice"
+                column="total_price"/>
+
+        <result property="createDate"
+                column="create_date"/>
+
+        <!--一对多关系 订单对订单明细
+        collection：一对多关系的集合标签
+        javaType：指明集合的类型
+        ofType：指明集合中存储的实体类类型
+        ofType="com.ssm.domain.OrderDetail"
+        javaType="java.util.ArrayList"
+        等价于resultMap="orderDetailMap"
+        -->
+        <collection property="orderDetails"
+                    resultMap="orderDetailMap">
+        </collection>
+
+    </resultMap>
 
     <select id="selectOrdersAndUser"
             resultMap="orderMap">
@@ -72,4 +123,15 @@
         WHERE o.user_id = u.id;
     </select>
 
+    <!--一对多订单对订单明细-->
+    <select id="selectOrdersAndDetail"
+            resultMap="orderAndDetailMap">
+        SELECT
+        <include refid="orderColumns"/>
+        ,
+        <include refid="orderDetailColumns"/>
+        FROM Orders o,Order_Detail od
+        WHERE o.id = od.order_id
+
+    </select>
 </mapper>

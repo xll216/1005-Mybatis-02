@@ -1,6 +1,7 @@
 package com.ssm.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,6 +15,9 @@ public class Orders implements Serializable {
 
     /*一对一关系 订单对用户*/
     private User user;//当前订单所属的用户对象
+
+    /*一对多关系 订单对订单明细*/
+    private ArrayList<OrderDetail> orderDetails;
 
     public Orders() {
     }
@@ -30,6 +34,15 @@ public class Orders implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+
+    public ArrayList<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(ArrayList<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     public int getId() {

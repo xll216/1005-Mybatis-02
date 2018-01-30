@@ -23,4 +23,19 @@ public class OrdersTest extends BaseTest {
         }
 
     }
+
+    @Test
+    public void selectOrdersAndDetail() {
+        /*查询订单 包含明细*/
+        List<Orders> orderss = ordersDao
+                .selectOrdersAndDetail();
+
+        for (Orders o : orderss) {
+            System.out.println(o);
+            System.out.println(o.getOrderDetails());
+
+            System.out.println("******");
+        }
+
+    }
 }
