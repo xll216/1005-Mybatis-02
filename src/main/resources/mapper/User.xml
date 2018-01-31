@@ -5,4 +5,159 @@
 
 <mapper namespace="com.ssm.mapper.UserDao">
 
+    <sql id="userColumns">
+          u.id,
+          u.username,
+          u.password,
+          u.sex,
+          u.birthday,
+          u.address
+    </sql>
+
+    <sql id="ordersColumns">
+          o.id oid,
+          o.number,
+          o.total_price,
+          o.create_date
+    </sql>
+
+    <sql id="usernameSql">
+        <if test="username != null and username != '' ">
+            AND username LIKE '%${username}%'
+        </if>
+    </sql>
+
+    <resultMap id="userAndOrderMap"
+               type="com.ssm.domain.User">
+        <id property="id" column="id"/>
+
+        <result property="username"
+                column="username"/>
+
+        <result property="password"
+                column="password"/>
+
+        <result property="sex"
+                column="sex"/>
+
+        <result property="birthday"
+                column="birthday"/>
+
+        <result property="address"
+                column="address"/>
+
+        <!--一对多关系-->
+        <collection property="orderss"
+                    resultMap="orderMap"/>
+
+    </resultMap>
+
+    <resultMap id="orderMap"
+               type="com.ssm.domain.Orders">
+        <id property="id" column="oid"/>
+
+        <result property="number"
+                column="number"/>
+
+        <result property="totalPrice"
+                column="total_price"/>
+
+        <result property="createDate"
+                column="create_date"/>
+    </resultMap>
+
+    <resultMap id="userMap"
+               type="com.ssm.domain.User">
+        <id property="id" column="id"/>
+
+        <result property="username"
+                column="username"/>
+
+        <result property="password"
+                column="password"/>
+
+        <result property="sex"
+                column="sex"/>
+
+        <result property="birthday"
+                column="birthday"/>
+
+        <result property="address"
+                column="address"/>
+    </resultMap>
+
+    <resultMap id="userExtMap"
+               type="com.ssm.domain.UserExt">
+        <id property="id" column="id"/>
+
+        <result property="username"
+                column="username"/>
+
+        <result property="password"
+                column="password"/>
+
+        <result property="sex"
+                column="sex"/>
+
+        <result property="birthday"
+                column="birthday"/>
+
+        <result property="address"
+                column="address"/>
+
+        <result property="oid" column="oid"/>
+
+        <result property="number"
+                column="number"/>
+
+        <result property="totalPrice"
+                column="total_price"/>
+
+        <result property="createDate"
+                column="create_date"/>
+
+    </resultMap>
+
+    <select id="selectOrdersOfUser"
+            resultMap="userAndOrderMap">
+
+        SELECT
+        <include refid="userColumns"/>
+        ,
+        <include refid="ordersColumns"/>
+
+        FROM User u LEFT JOIN Orders o
+        ON u.id = o.user_id;
+    </select>
+
+
+    <select id="selectOrdersOfUser2"
+            resultMap="userExtMap">
+
+        SELECT
+        <include refid="userColumns"/>
+        ,
+        <include refid="ordersColumns"/>
+
+        FROM User u LEFT JOIN Orders o
+        ON u.id = o.user_id;
+    </select>
+    <select id="selectAll"
+            resultMap="userMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM User u
+    </select>
+
+    <select id="select"
+            parameterType="com.ssm.domain.User"
+            resultMap="userMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM User u
+        <where>
+            <include refid="usernameSql"/>
+        </where>
+    </select>
+
 </mapper>

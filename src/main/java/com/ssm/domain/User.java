@@ -2,6 +2,7 @@ package com.ssm.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 蓝鸥科技有限公司  www.lanou3g.com.
@@ -14,6 +15,9 @@ public class User implements Serializable {
     private Date birthday;
     private String address;
 
+    /*该用户对应的订单集合*/
+    private List<Orders> orderss;
+
     public User() {
     }
 
@@ -23,6 +27,14 @@ public class User implements Serializable {
         this.sex = sex;
         this.birthday = birthday;
         this.address = address;
+    }
+
+    public List<Orders> getOrderss() {
+        return orderss;
+    }
+
+    public void setOrderss(List<Orders> orderss) {
+        this.orderss = orderss;
     }
 
     public int getId() {
