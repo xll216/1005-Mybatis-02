@@ -11,7 +11,18 @@ public class OrderDetail implements Serializable {
     private double itemPrice;
     private double totalPrice;
 
+    /*当前明细对应的商品对象，一对一的关系*/
+    private Item item;
+
     public OrderDetail() {
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getItemCount() {

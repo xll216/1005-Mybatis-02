@@ -61,4 +61,15 @@ public class Item implements Serializable {
     public void setProduce(String produce) {
         this.produce = produce;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                ", price=" + price +
+                ", produce='" + produce + '\'' +
+                '}';
+    }
 }

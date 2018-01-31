@@ -12,4 +12,7 @@ public interface UserDao {
     List<User> selectOrdersOfUser();
 
     List<UserExt> selectOrdersOfUser2();
+
+    /*多对多关系*/
+    List<User> selectItemOfUser();
 }

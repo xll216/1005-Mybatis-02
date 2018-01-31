@@ -6,19 +6,31 @@
 <mapper namespace="com.ssm.mapper.UserDao">
 
     <sql id="userColumns">
-          u.id,
-          u.username,
-          u.password,
-          u.sex,
-          u.birthday,
-          u.address
+        u.id,
+        u.username,
+        u.password,
+        u.sex,
+        u.birthday,
+        u.address
     </sql>
-
     <sql id="ordersColumns">
-          o.id oid,
-          o.number,
-          o.total_price,
-          o.create_date
+        o.id oid,
+             o.number,
+             o.total_price,
+             o.create_date
+    </sql>
+    <sql id="orderDetailColumns">
+        od.id odid,
+              od.item_count,
+              od.item_price,
+              od.total_price otp
+    </sql>
+    <sql id="itemColumns">
+        i.id iid,
+             i.name,
+             i.color,
+             i.price,
+             i.produce
     </sql>
 
     <sql id="usernameSql">
@@ -52,6 +64,31 @@
 
     </resultMap>
 
+    <!--多对多关系返回的结果集映射-->
+    <resultMap id="userAndItemMap"
+               type="com.ssm.domain.User">
+        <id property="id" column="id"/>
+
+        <result property="username"
+                column="username"/>
+
+        <result property="password"
+                column="password"/>
+
+        <result property="sex"
+                column="sex"/>
+
+        <result property="birthday"
+                column="birthday"/>
+
+        <result property="address"
+                column="address"/>
+
+        <!--一对多关系-->
+        <collection property="orderss"
+                    resultMap="orderMap"/>
+
+    </resultMap>
     <resultMap id="orderMap"
                type="com.ssm.domain.Orders">
         <id property="id" column="oid"/>
@@ -64,7 +101,67 @@
 
         <result property="createDate"
                 column="create_date"/>
+
+        <!--一对多的关系 一个订单对应多个明细-->
+        <collection property="orderDetails"
+                    resultMap="orderDetailMap"/>
     </resultMap>
+    <resultMap id="orderDetailMap"
+               type="com.ssm.domain.OrderDetail">
+        <id property="id" column="odid"/>
+
+        <result property="itemCount"
+                column="item_count"/>
+
+        <result property="itemPrice"
+                column="item_price"/>
+
+        <result property="totalPrice"
+                column="otp"/>
+
+        <!--一对一关系 一个订单明细对应一个商品对象-->
+        <association property="item"
+                     resultMap="itemMap"/>
+    </resultMap>
+    <resultMap id="itemMap"
+               type="com.ssm.domain.Item">
+        <id property="id" column="iid"/>
+
+        <result property="name"
+                column="name"/>
+
+        <result property="color"
+                column="color"/>
+
+        <result property="price"
+                column="price"/>
+
+        <result property="produce"
+                column="produce"/>
+
+    </resultMap>
+
+    <!--多对多关系 查询用户下的购买的所有商品信息-->
+    <select id="selectItemOfUser"
+            resultMap="userAndItemMap">
+        SELECT
+        <include refid="userColumns"/>
+        ,
+        <include refid="ordersColumns"/>
+        ,
+        <include refid="orderDetailColumns"/>
+        ,
+        <include refid="itemColumns"/>
+
+        FROM User u
+        LEFT JOIN Orders o
+        ON u.id = o.user_id
+        LEFT JOIN Order_Detail od
+        ON o.id = od.order_id
+        LEFT JOIN Item i
+        ON od.item_id = i.id;
+    </select>
+
 
     <resultMap id="userMap"
                type="com.ssm.domain.User">
@@ -85,7 +182,6 @@
         <result property="address"
                 column="address"/>
     </resultMap>
-
     <resultMap id="userExtMap"
                type="com.ssm.domain.UserExt">
         <id property="id" column="id"/>
@@ -129,8 +225,6 @@
         FROM User u LEFT JOIN Orders o
         ON u.id = o.user_id;
     </select>
-
-
     <select id="selectOrdersOfUser2"
             resultMap="userExtMap">
 
@@ -148,7 +242,6 @@
         <include refid="userColumns"/>
         FROM User u
     </select>
-
     <select id="select"
             parameterType="com.ssm.domain.User"
             resultMap="userMap">
